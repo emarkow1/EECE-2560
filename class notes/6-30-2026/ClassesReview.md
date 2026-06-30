@@ -156,3 +156,43 @@ Member function const: any data members of the object are not changed
 Restrictions
 * Const objects can only call const member functions
 * A const object can not be passed by reference
+
+ex:
+
+```
+const time24 noon (12); //const object
+noon.writeTime(); // ✓
+noon.readTime(); // x
+t.duration(noon); // ✓
+```
+Return by value:
+```
+time24 duration(...)
+{
+    ...
+}
+```
+
+return by reference: you are going to return the memory location of that output
+```
+time24 & duration(...){...}
+```
+
+return by const reference
+```
+const time24 & ...
+```
+
+## Summary of Passing Parameters
+
+1. By value
+    - A copy is made
+    - No change to the real object outside
+2. By Reference
+    - No copy is made
+    - Change the real object outside
+3. By Const Reference
+    - No copy is made
+    - Not allow changes to the real object outside
+
+const objects can be passed by 1 and 3, non const objects can be passed by 1, 2, and 3.
