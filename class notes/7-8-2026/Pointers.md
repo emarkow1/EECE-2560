@@ -192,9 +192,172 @@ cout << *ptr2 << endl;
 cout << *ptr2 << endl;
 ```
 
-## For Quiz 2
+### For Quiz 2
 
 next Tuesday
 * Operator overloading
 * Stack
 * Queue and Priority Queue
+
+### Deallocating memory examples
+ex:
+
+```
+int *ptr1 = new int;
+int *ptr2 = ptr1;
+
+*ptr1 = 17;
+cout << *ptr1 << *ptr2; // 17 17
+delete ptr1;
+cout << *ptr1 << *ptr2; // 17 17
+// FIX
+ptr1 = ptr2 = NULL
+```
+Causes unpredictable result because you are accessing a location that you shouldn't be able to
+
+```
+int *ptr;
+ptr = new int;
+*ptr = 17;
+... (no delete ptr)
+ptr = new int; // This will cause a memory leak since the space containing 17 was never deallocated
+*ptr = 6;
+```
+
+## Arrays: Pointer Arithmetic
+Array name: a const pointer to the first element in the array
+
+```
+int arr[7];
+*arr == arr[0];
+*(arr + 1) = arr[1];
+```
+
+the `1` here is one of the contained type's spaces (e.g. int8 has different size than int32)
+
+Could also write
+```
+int *p; p = arr;
+
+*p = arr[0]; *(p+1) = arr[1]
+```
+
+## Access Arrays and Allocate Arrays
+Using a pointer to scan an array
+
+```
+double arr[] = {1.2, 4.5, 6.7, 9.0};
+double *p = arr;
+int arrSize = sizeof(arr)/sizeof(double);
+
+while (p! = arr + arrSize)
+{
+    cout << *p << endl;
+    p++;
+}
+```
+
+Dynamic memory allocation to allocate arrays
+```
+int *ptr;
+ptr = new int[100];
+cout << ptr[0];
+cout << ptr[1];
+...
+```
+
+```
+ptr[99] == *(ptr + 99) // equivalent representation
+```
+
+## Non-primitive Type Arrays
+Dynamic Memory allocation
+
+```
+time24 *timeList;
+timeList = new time24[10];
+for (int i = 0; i < 10; i++)
+    timeList[i].setHour(7);
+```
+
+Deallocate a dynamically allocated array
+```
+delete []timeList;
+```
+
+What is the difference?
+```
+int *p = new int(100);
+int *p = new int[100];
+```
+
+```
+delete p1; //frees 1 integer space
+
+delete []p2;
+```
+
+## Pointers + Classes
+How to access class members through a pointer?
+
+```
+rectangle box(2,5);
+
+rectangle *rectPte;
+
+rectPtr = &box;
+
+cout << *rectPtr.area(); object .
+
+cout << *rectPtr->area(); pointer ->
+```
+
+```
+rectangle *rectPtr2;
+
+rectPtr2 = new rectangle(2,5);
+
+rectPtr2->setSize(7,10);
+
+delete rectPtr2;
+```
+
+## Classes Using Dynamic Memory Allocation
+Store data using dynamic memory
+Constructor (allocate) + destructor (deallocate)
+
+```
+template <typename T>
+class dynamicClass
+{
+    public:
+    void print();
+    ...
+    private:
+    T member1;
+    T *member2Ptr; //Dyamically allocated
+}
+```
+
+## Dynamic Class Constructor
+dynamicClass Constructor
+
+```
+template <typename T>
+dyamicClass<T> :: dynamicClass(const T &ml, const T &m2) : member(m1)
+{
+    member1 = m1;
+    member2Ptr = new T(m2);
+}
+
+dynamicClass<int> obj(1, 10)
+// 1. allocate space for obj
+// 2. call constructor automatically
+obj.print()
+```
+
+```
+dynamicClass<int> *dPtr;
+dPtr = new dynamicClass<int> (2, 20);
+dPtr->print();
+```
